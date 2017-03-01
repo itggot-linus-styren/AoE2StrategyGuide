@@ -1,13 +1,63 @@
+var previousItem;
+var prevContainerId;
+$(function() {
+    previousItem = $('input[name=t]:checked', '#tabs');
+    $(previousItem).next('label').next('div').css('opacity', '1');
+	prevContainerId = '#home-container';
+});
+$('#tabs input[type="radio"]').click(function() {
+    if (!$(this).is(':checked') || previousItem === this)
+        return;
+
+    if (previousItem != null) {
+		var oldContentDiv = $(previousItem).next('label').next('div');
+        oldContentDiv.removeClass('content-hide-remove');
+        oldContentDiv.removeClass('content-hide-remove-backwards');
+		if ($(this).isAfter(previousItem)) {
+        	oldContentDiv.addClass('content-hide-add');
+		} else {
+        	oldContentDiv.addClass('content-hide-add-backwards');
+		}
+		setTimeout(function() {
+			oldContentDiv.css('opacity', '0');
+		}, 0.5);
+    }
+
+    var contentDiv = $(this).next('label').next('div');
+	contentDiv.css('opacity', '1');
+	contentDiv.removeClass('content-hide-add');
+	contentDiv.removeClass('content-hide-add-backwards');
+	if ($(this).isAfter(previousItem)) {
+		contentDiv.addClass('content-hide-remove');
+	} else {
+		contentDiv.addClass('content-hide-remove-backwards');
+	}
+    previousItem = this;
+});
+(function($) {
+    $.fn.isAfter = function(sel){
+        return this.prevAll().filter(sel).length !== 0;
+    };
+
+    $.fn.isBefore= function(sel){
+        return this.nextAll().filter(sel).length !== 0;
+    };
+})(jQuery);
 $("#drawer > ul > li > div > a").on('click', function() {
-    $(this).parent().addClass('drawer_list_item_active');
+	var parentDiv = $(this).parent();
+    parentDiv.addClass('drawer_list_item_active');
+    setTimeout(function() {
+        parentDiv.removeClass('drawer_list_item_active');
+    }, 0.25);
 });
 
-// Close drawer and open url
-function closeDrawerAndOpen(url) {
+// Close drawer and open container
+function closeDrawerAndOpen(containerId) {
     $('#drawer-toggle').prop('checked', false);
-    setTimeout(function() {        
-        location.assign(url);
-    }, 0.5);
+	$(prevContainerId).css('opacity', '0');
+	$(containerId).css('opacity', '1');
+	console.log(containerId);
+	prevContainerId = containerId;
 }
 
 // Slide toggle function

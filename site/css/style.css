@@ -128,7 +128,8 @@ header h1 {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
-    display: none;
+    display: flex;
+	opacity: 0;
 }
 
 [type=radio],#r1:checked ~ #slider {
@@ -158,11 +159,11 @@ header h1 {
 [type=radio]:checked + label {
  	color: white;
 }
-
+/*
 [type=radio]:checked + label + .content {
 	display: flex;
 }
-
+*/
 #tabs > label::-moz-selection {
 	background: rgba(0, 0, 0, 0);
 }
@@ -171,24 +172,118 @@ header h1 {
 	background: rgba(0, 0, 0, 0);
 }
 
+.content-hide-add {
+    position: absolute;
+    animation: slide-out 0.5s forwards;
+    -webkit-animation: slide-out 0.5s forwards;
+    -moz-animation: slide-out 0.5s forwards;
+}
+
+.content-hide-remove {    
+    position: absolute;
+    animation: slide-in 0.5s forwards;
+    -webkit-animation: slide-in 0.5s forwards;
+    -moz-animation: slide-in 0.5s forwards;
+}
+
+.content-hide-add-backwards {
+    position: absolute;
+    animation: slide-out-b 0.5s forwards;
+    -webkit-animation: slide-out-b 0.5s forwards;
+    -moz-animation: slide-out-b 0.5s forwards;
+}
+
+.content-hide-remove-backwards {    
+    position: absolute;
+    animation: slide-in-b 0.5s forwards;
+    -webkit-animation: slide-in-b 0.5s forwards;
+    -moz-animation: slide-in-b 0.5s forwards;
+}
+
+@keyframes slide-in {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@-webkit-keyframes slide-in {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@-moz-keyframes slide-in {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@keyframes slide-out {
+    0% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(-100%); opacity: 1; }
+}
+
+@-webkit-keyframes slide-out {
+    0% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(-100%); opacity: 1; }
+}
+
+@-moz-keyframes slide-out {
+    0% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(-100%); opacity: 1; }
+}
+
+@keyframes slide-in-b {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@-webkit-keyframes slide-in-b {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@-moz-keyframes slide-in-b {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0%); opacity: 1; }
+}
+
+@keyframes slide-out-b {
+    0% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(100%); opacity: 1; }
+}
+
+@-webkit-keyframes slide-out-b {
+    0% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(100%); opacity: 1; }
+}
+
+@-moz-keyframes slide-out-b {
+    0% { transform: translateX(0%); opacity: 1; }
+    100% { transform: translateX(100%); opacity: 1; }
+}
+
 .mobile {
     display: none;
 }
     
-.card_pc {
-    display: inline-block;
-}
-
-.card_mobile {
-    display: none;
-}
-
 /* target Samsung Galaxy S4 */
 @media screen and (min-device-width: 320px) and (max-device-width: 360px) {
     
-    #home-container {
-        display: block !important;
+    .mobile {
+		position: absolute;
+		top: 22vh;
+		left: 0;
+		right: 0;
+		min-height: calc(100vh - 22vh);
+        display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		align-items: center;
+		overflow-y: scroll;
+		opacity: 0;
     }
+
+	#home-container {
+		opacity: 1;
+	}
     
     content {
 		height: calc(100vh - 22vh);
@@ -218,7 +313,7 @@ header h1 {
 	  z-index: 3;
 	}
 
-	#drawer-toggle-label:before {
+	#drawer-toggle-label::before {
 	  content: '';
 	  display: block;
 	  position: absolute;
@@ -341,13 +436,5 @@ header h1 {
 		overflow-x: hidden;
 		overflow-y: scroll;
 	}
-
-    .card_mobile {
-        display: inline-block;
-    }
-
-    .card_pc {
-        display: none;
-    }
 
 }
