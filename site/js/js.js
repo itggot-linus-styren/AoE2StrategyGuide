@@ -1,3 +1,15 @@
+$("#drawer > ul > li > div > a").on('click', function() {
+    $(this).parent().addClass('drawer_list_item_active');
+});
+
+// Close drawer and open url
+function closeDrawerAndOpen(url) {
+    $('#drawer-toggle').prop('checked', false);
+    setTimeout(function() {        
+        location.assign(url);
+    }, 0.5);
+}
+
 // Slide toggle function
 $(function () {
     $('nav').on('click', 'li', function () {
@@ -18,7 +30,7 @@ $(function () {
 	var colour1 = "#FF1744";
 	var colour2 = "#FFFFFFAA";
 	var opacity = 0.1;
-	var ripple_within_elements = ['input', 'button', 'a'];
+	var ripple_within_elements = ['input', 'button', 'a', 'label'];
 	var ripple_without_diameter = 0;
 
 	var overlays = {
@@ -103,11 +115,14 @@ $(function () {
 		$element.style[transition] = "none";
 		$element.style.backgroundSize = "3px 3px";
 		$element.style.opacity = opacity;
+
+        var target = touch.target;
+
 		if(ripple_within_elements.indexOf(touch.target.nodeName.toLowerCase()) > -1) {
 			x = touch.offsetX;
 			y = touch.offsetY;
 
-			if (touch.target.className == "card__button") {	
+			if (target.className == "card__button") {	
 				$element.style.background = "-webkit-radial-gradient(" + colour1 + " 64%, rgba(0,0,0,0) 65%) no-repeat";
 				$element.style.background = "radial-gradient(" + colour1 + " 64%, rgba(0,0,0,0) 65%) no-repeat";
 			} else {
@@ -115,7 +130,7 @@ $(function () {
 				$element.style.background = "radial-gradient(" + colour2 + " 64%, rgba(0,0,0,0) 65%) no-repeat";
 			}
 			
-			var dimensions = touch.target.getBoundingClientRect();
+			var dimensions = target.getBoundingClientRect();
 			if(!x || !y){
 				x = (touch.clientX || touch.x) - dimensions.left;
 				y = (touch.clientY || touch.y) - dimensions.top;

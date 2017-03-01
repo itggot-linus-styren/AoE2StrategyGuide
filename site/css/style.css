@@ -40,7 +40,7 @@ header > div {
 	justify-content: space-around;
 }
 
-header h1 {
+header h1 { 
     padding-left: 16px;
     color: white;
     font-size: 24px;
@@ -59,6 +59,8 @@ header h1 {
 	height: 100%;
 	background-color: rgba(0, 0, 0, 0.7);
     opacity: 0;
+    z-index: 2;
+    pointer-events: none;
 }
 
 #drawer-toggle-label {
@@ -70,39 +72,109 @@ header h1 {
 }
 
 #tabs {
+    position: relative;
+    height: 55px;
     background-color: rgb(81,45,168);
-    margin-bottom: 0.5em;
+    margin-bottom: 16px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    /*transform: translate(-50%, -50%);*/
 }
 
-nav button {
+#tabs label {
 	border: none
 	background: transparent;
+    background-color: transparent;
 	outline: none;
 	position: relative;
-	display: inline-block;
 	line-height: 52px;
 	padding: 0 24px;
 	color: rgba(255, 255, 255, 0.62);
 }
 
-.selected {
-    border-bottom: medium solid white;
-	color: white;
+#tabs > label:hover {
+    color: white;
+    cursor: pointer;
 }
 
-content {
-    height: calc(100vh - 22vh - 0.5em - 55px);
+#tabs > label, #slider {
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    width: 264px;
+    min-width: 264px;
+}
+
+#tabs [type=radio] {
+    display: none;
+}
+
+#slider {
+    background-color: transparent;
+    background: transparent;
+    border-bottom: 3px solid white;
+	align-self: flex-end;
+}
+
+.content {
+    position: absolute;
+    top: 22vh;
+	left: 0;
+	right: 0;
+	bottom: 0;
     min-height: 288px;
-    display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
+    display: none;
 }
 
+[type=radio],#r1:checked ~ #slider {
+ 	transform: translate(calc(0px - 264px * 6), 0px);
+}
+
+[type=radio],#r2:checked ~ #slider {
+ 	transform: translate(calc(0px - 264px * 5), 0px);
+}
+
+[type=radio],#r3:checked ~ #slider {
+ 	transform: translate(calc(0px - 264px * 4), 0px);
+}
+
+[type=radio],#r4:checked ~ #slider {
+ 	transform: translate(calc(0px - 264px * 3), 0px);
+}
+
+[type=radio],#r5:checked ~ #slider {
+ 	transform: translate(calc(0px - 264px * 2), 0px);
+}
+
+[type=radio],#r6:checked ~ #slider {
+ 	transform: translate(calc(0px - 264px * 1), 0px);
+}
+
+[type=radio]:checked + label {
+ 	color: white;
+}
+
+[type=radio]:checked + label + .content {
+	display: flex;
+}
+
+#tabs > label::-moz-selection {
+	background: rgba(0, 0, 0, 0);
+}
+
+#tabs > label::selection {
+	background: rgba(0, 0, 0, 0);
+}
+
+.mobile {
+    display: none;
+}
+    
 .card_pc {
     display: inline-block;
 }
@@ -114,9 +186,14 @@ content {
 /* target Samsung Galaxy S4 */
 @media screen and (min-device-width: 320px) and (max-device-width: 360px) {
     
+    #home-container {
+        display: block !important;
+    }
+    
     content {
 		height: calc(100vh - 22vh);
         flex-direction: column;
+        margin-bottom: 16px;
     }
 
 	#tabs {
@@ -170,6 +247,7 @@ content {
       -webkit-transform: translate3d(-100%, 0, 0);
 	  translate3d(-100%, 0, 0);
 	  z-index: 4;
+      box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3);
 	}
 
 	#drawer > div {
@@ -203,6 +281,8 @@ content {
 	#drawer ul > li > div {
 		display: flex;
 		align-items: center;
+        width: 100%;
+        transition: background 0s;
 	}
 
 	#drawer ul > li > div > a {
@@ -211,6 +291,18 @@ content {
 		color: rgba(0, 0, 0, 0.87);
 		text-decoration: none;
 	}
+
+    #drawer ul > li > div > a::-moz-selection {
+        background: rgba(0, 0, 0, 0);
+    }
+
+    #drawer ul > li > div > a::selection {
+        background: rgba(0, 0, 0, 0);
+    }
+
+    .drawer_list_item_active {
+        background: rgba(0, 0, 0, 0.15);
+    }
 
 	#drawer .hr_ {
 		padding-top: 8px;

@@ -1,6 +1,10 @@
 button {
+  outline: none;
   border: none;
   background: transparent;
+}
+button:focus {
+  outline: none;
 }
 .card {
   will-change: transform;
