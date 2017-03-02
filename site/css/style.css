@@ -74,8 +74,7 @@ header h1 {
 #tabs {
     position: relative;
     height: 55px;
-    background-color: rgb(81,45,168);
-    margin-bottom: 16px;
+    background-color: rgb(81,45,168);   
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -118,38 +117,33 @@ header h1 {
 	align-self: flex-end;
 }
 
-.content {
-    position: absolute;
-    top: calc(55px);
-    left: 0;
-    right: 0;
+.scroll-hack {
+    overflow-y: auto;
+    overflow-x: hidden;
     height: calc(100vh - 192px - 55px);
-	opacity: 0;
-    padding-top: 16px;
     z-index: -1;
-    pointer-events: none;
 }
 
-.inner-content {
+.content {
     position: relative;
-    padding-top: calc(192px + 55px + 16px);
-    padding-left: 16px;
-    padding-right: 16px;
-    flex-direction: row;
-    height: calc(100vh - 192px - 55px - 16px);
+    min-height: calc(100vh - 192px - 55px);
+    height: auto;
+    width: 100%;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    overflow-y: scroll;
     display: flex;
+	opacity: 0;
+    z-index: 1;
+    pointer-events: none;
+    padding-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 
 .content > .img-text {
     display: flex;
     flex-direction: row;
-}
-
-#r2 + label + div > .inner-content {
-    flex-direction: column;
 }
 
 [type=radio],#r1:checked ~ #slider {
@@ -196,16 +190,18 @@ header h1 {
     z-index: 1;
 }
 
+#home-container {
+    flex-direction: row;
+}
+
 .content-hide-add {
-    position: absolute;
     animation: slide-out 0.5s forwards;
     -webkit-animation: slide-out 0.5s forwards;
     -moz-animation: slide-out 0.5s forwards;
 }
 
 .content-hide-remove {    
-    position: absolute;
-    pointer-events: auto;
+    pointer-events: auto !important;
     z-index: 1;
     animation: slide-in 0.5s forwards;
     -webkit-animation: slide-in 0.5s forwards;
@@ -213,15 +209,13 @@ header h1 {
 }
 
 .content-hide-add-backwards {
-    position: absolute;
     animation: slide-out-b 0.5s forwards;
     -webkit-animation: slide-out-b 0.5s forwards;
     -moz-animation: slide-out-b 0.5s forwards;
 }
 
 .content-hide-remove-backwards {    
-    position: absolute;
-    pointer-events: auto;
+    pointer-events: auto !important;
     z-index: 1;
     animation: slide-in-b 0.5s forwards;
     -webkit-animation: slide-in-b 0.5s forwards;
@@ -288,34 +282,74 @@ header h1 {
     100% { transform: translateX(100%); opacity: 1; }
 }
 
-.mobile {
+.transition-container {
+    position: absolute;
+    top: calc(192px + 55px);
+    left: 0;
+    right: 0;
+}
+
+.target-pc {
+    display: block;
+}
+
+.target-mobile {
     display: none;
 }
     
 /* target Samsung Galaxy S4 */
 @media screen and (min-device-width: 320px) and (max-device-width: 360px) {
     
-    .mobile {
-		position: relative;
+    .content {
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
+        pointer-events: auto !important;
 		align-items: center;
-		min-height: calc(100vh - 22vh);
+		min-height: calc(100vh - 192px);      
 		overflow-y: scroll;
 		opacity: 0;
     }
 
+    .scroll-hack {
+        height: calc(100vh - 192px);
+    }
+
 	.transition-container {
-		display: absolute;
-		top: 22vh;
-		left: 0;
-		right: 0;
+		top: 192px;
 	}
 
-	#home-container {
-		opacity: 1;
-	}
+    #home-container {
+        flex-direction: column;
+    }
+
+    .content-hide-add {
+        animation: none !important;
+        -webkit-animation: none !important;
+        -moz-animation: none !important;
+    }
+
+    .content-hide-remove {    
+        pointer-events: auto;
+        z-index: 1;
+        animation: none !important;
+        -webkit-animation: none !important;
+        -moz-animation: none !important;
+    }
+
+    .content-hide-add-backwards {
+        animation: none !important;
+        -webkit-animation: none !important;
+        -moz-animation: none !important;
+    }
+
+    .content-hide-remove-backwards {    
+        pointer-events: auto;
+        z-index: 1;
+        animation: none !important;
+        -webkit-animation: none !important;
+        -moz-animation: none !important;
+    }
     
 	#tabs {
 		display: none;
@@ -457,4 +491,12 @@ header h1 {
 		-webkit-transform: translate3d(0, 0, 0);
 		translate3d(0, 0, 0); 
 	}
+
+    .target-pc {
+        display: none;
+    }
+
+    .target-mobile {
+        display: block;
+    }
 }
