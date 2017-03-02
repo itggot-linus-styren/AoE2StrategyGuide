@@ -1,49 +1,70 @@
 var previousItem;
 var prevContainerId;
-$(function() {
+$(function() {/*
+    $('body').click(function(event) {
+        console.log(event.target);
+    });*/
     previousItem = $('input[name=t]:checked', '#tabs');
-    $(previousItem).next('label').next('div').css('opacity', '1');
-    $(previousItem).next('label').next('div').css('pointer-events', 'auto');
-	prevContainerId = '#home-container';
-    /*$(window).resize(function() {
-		$('.mobile').each(function(i, obj) {
-			$(obj).css('display', 'flex');
-		});
-		if ($('.tabs').css('display') != 'none') {
-			$('.mobile').each(function(i, obj) {
-				$(obj).css('display', 'none');
-			});
-		}
-	});*/
+    var contentId = $(previousItem).attr('class').split(" ")[0];
+	var contentDiv = $('#' + contentId);   
+    $(contentDiv).css('opacity', '1');
+    $(contentDiv).css('pointer-events', 'auto');
+    $(".content:not(#" + contentId + ")").hide();
+	prevContainerId = '#' + contentId;
 });
-$('#tabs input[type="radio"]').click(function() {
-    if (!$(this).is(':checked') || previousItem === this)
-        return;
 
+function doTransition(that, usingTabs) {
+    var oldContentDiv = null;
     if (previousItem != null) {
-		var oldContentDiv = $(previousItem).next('label').next('div');
+        var oldId = $(previousItem).attr('class').split(" ")[0];
+		oldContentDiv = $('#' + oldId);
         oldContentDiv.removeClass('content-hide-remove');
         oldContentDiv.removeClass('content-hide-remove-backwards');
-		if ($(this).isAfter(previousItem)) {
+		if ($(that).isAfter(previousItem)) {
         	oldContentDiv.addClass('content-hide-add');
 		} else {
         	oldContentDiv.addClass('content-hide-add-backwards');
 		}
-		setTimeout(function() {
-			oldContentDiv.css('opacity', '0');
-		}, 500);
+        if (usingTabs) {
+            setTimeout(function() {
+                oldContentDiv.css('opacity', '0');
+            }, 500);
+        }
     }
 
-    var contentDiv = $(this).next('label').next('div');
-	contentDiv.css('opacity', '1');
+    contentDiv = null;
+    if (usingTabs) {
+        var contentId = $(that).attr('class').split(" ")[0];
+        prevContainerId = '#' + contentId;
+	    contentDiv = $(prevContainerId);
+	    $(contentDiv).show();
+    	$(contentDiv).addClass('transition-container');
+	    contentDiv.css('opacity', '1');
+    } else {
+        contentDiv = $(that);
+    }
 	contentDiv.removeClass('content-hide-add');
 	contentDiv.removeClass('content-hide-add-backwards');
-	if ($(this).isAfter(previousItem)) {
+	if ($(that).isAfter(previousItem)) {
 		contentDiv.addClass('content-hide-remove');
 	} else {
 		contentDiv.addClass('content-hide-remove-backwards');
 	}
-    previousItem = this;
+    if (usingTabs) {
+        setTimeout(function() {
+            if (oldContentDiv != null)
+                $(oldContentDiv).hide();
+            $(contentDiv).removeClass('transition-container');
+        }, 500);   
+        previousItem = that;
+    }
+}
+
+$('#tabs input[type="radio"]').click(function() {
+    if (!$(this).is(':checked') || $(previousItem).attr('class').split(" ")[0] == $(this).attr('class').split(" ")[0])
+        return;
+
+    doTransition(this, true);
 });
 (function($) {
     $.fn.isAfter = function(sel){
@@ -65,17 +86,24 @@ $("#drawer > ul > li > div > a").on('click', function() {
 // Close drawer and open container
 function closeDrawerAndOpen(containerId) {
     $('#drawer-toggle').prop('checked', false);
+    if (prevContainerId == containerId)
+        return;
+    previousItem = $('input[name=t]:checked', '#tabs');
+    $('.' + containerId.slice(1, containerId.length)).prop('checked', true);
 	//$(containerId).addClass('transition-container');
 	var oldPrevContainerId = prevContainerId;
 	$(containerId).show();//.css('display', 'flex');
 	$(containerId).addClass('transition-container');
 	$(prevContainerId).css('opacity', '0');
 	$(containerId).css('opacity', '1');
+	prevContainerId = containerId;
 	setTimeout(function() {
 		$(oldPrevContainerId).hide();//.css('display', 'none');
-		$(containerId).removeClass('transition-container');
+		$(prevContainerId).removeClass('transition-container');
 	}, 100);
-	prevContainerId = containerId;
+    doTransition(containerId, false);
+    previousItem = $('input[name=t]:checked', '#tabs');
+    console.log(previousItem);
 }
 
 // Slide toggle function
