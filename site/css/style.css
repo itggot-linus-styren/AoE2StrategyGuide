@@ -268,29 +268,27 @@ header h1 {
 @media screen and (min-device-width: 320px) and (max-device-width: 360px) {
     
     .mobile {
-		position: absolute;
-		top: 22vh;
-		left: 0;
-		right: 0;
-		min-height: calc(100vh - 22vh);
-        display: flex;
+		position: relative;
+		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
 		align-items: center;
+		min-height: calc(100vh - 22vh);
 		overflow-y: scroll;
 		opacity: 0;
     }
+
+	.transition-container {
+		display: absolute;
+		top: 22vh;
+		left: 0;
+		right: 0;
+	}
 
 	#home-container {
 		opacity: 1;
 	}
     
-    content {
-		height: calc(100vh - 22vh);
-        flex-direction: column;
-        margin-bottom: 16px;
-    }
-
 	#tabs {
 		display: none;
 	}
@@ -431,10 +429,4 @@ header h1 {
 		-webkit-transform: translate3d(0, 0, 0);
 		translate3d(0, 0, 0); 
 	}
-
-	content {
-		overflow-x: hidden;
-		overflow-y: scroll;
-	}
-
 }

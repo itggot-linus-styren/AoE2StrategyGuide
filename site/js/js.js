@@ -4,6 +4,16 @@ $(function() {
     previousItem = $('input[name=t]:checked', '#tabs');
     $(previousItem).next('label').next('div').css('opacity', '1');
 	prevContainerId = '#home-container';
+	/*$(window).resize(function() {
+		$('.mobile').each(function(i, obj) {
+			$(obj).css('display', 'flex');
+		});
+		if ($('.tabs').css('display') != 'none') {
+			$('.mobile').each(function(i, obj) {
+				$(obj).css('display', 'none');
+			});
+		}
+	});*/
 });
 $('#tabs input[type="radio"]').click(function() {
     if (!$(this).is(':checked') || previousItem === this)
@@ -20,7 +30,7 @@ $('#tabs input[type="radio"]').click(function() {
 		}
 		setTimeout(function() {
 			oldContentDiv.css('opacity', '0');
-		}, 0.5);
+		}, 500);
     }
 
     var contentDiv = $(this).next('label').next('div');
@@ -48,15 +58,22 @@ $("#drawer > ul > li > div > a").on('click', function() {
     parentDiv.addClass('drawer_list_item_active');
     setTimeout(function() {
         parentDiv.removeClass('drawer_list_item_active');
-    }, 0.25);
+    }, 250);
 });
 
 // Close drawer and open container
 function closeDrawerAndOpen(containerId) {
     $('#drawer-toggle').prop('checked', false);
+	//$(containerId).addClass('transition-container');
+	var oldPrevContainerId = prevContainerId;
+	$(containerId).show();//.css('display', 'flex');
+	$(containerId).addClass('transition-container');
 	$(prevContainerId).css('opacity', '0');
 	$(containerId).css('opacity', '1');
-	console.log(containerId);
+	setTimeout(function() {
+		$(oldPrevContainerId).hide();//.css('display', 'none');
+		$(containerId).removeClass('transition-container');
+	}, 100);
 	prevContainerId = containerId;
 }
 
