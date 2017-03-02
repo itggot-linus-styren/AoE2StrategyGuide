@@ -3,8 +3,9 @@ var prevContainerId;
 $(function() {
     previousItem = $('input[name=t]:checked', '#tabs');
     $(previousItem).next('label').next('div').css('opacity', '1');
+    $(previousItem).next('label').next('div').css('pointer-events', 'auto');
 	prevContainerId = '#home-container';
-	/*$(window).resize(function() {
+    /*$(window).resize(function() {
 		$('.mobile').each(function(i, obj) {
 			$(obj).css('display', 'flex');
 		});
@@ -119,6 +120,7 @@ $(function () {
 			$element.style.background = "-webkit-radial-gradient(" + colour1 + " 64%, rgba(0,0,0,0) 65%) no-repeat";
 			$element.style.background = "radial-gradient(" + colour1 + " 64%, rgba(0,0,0,0) 65%) no-repeat";
 			$element.style.transform = "translateZ(0)";
+            $element.style.zIndex = "2";
 			$element.transition_phase = 0;
 			$element.rid = overlays.items.length;
 			$element.next_transition = overlays.next_transition_generator($element);
