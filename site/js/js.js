@@ -11,7 +11,23 @@ $(function() {/*
     $(contentDiv).css('pointer-events', 'auto');
     $(".content:not(#" + contentId + ")").hide();
 	prevContainerId = '#' + contentId;
+    $(".sticky-scroller").scroll(updateHeight);
 });
+
+function updateHeight() {
+    var elem = $('#tabs');
+    //var containerHeight = elem.offsetHeight;
+    //var lastChild = elem.children().last();
+    //var verticalOffset = $(lastChild).offset().top + $(lastChild).height();
+    //console.log(verticalOffset);
+    //$(elem).height(containerHeight - verticalOffset);
+    var scrollOffset = Math.max(192 - $(".sticky-scroller").scrollTop(), 0);
+    if (scrollOffset == 0) {
+        $("#tabs").addClass("tabs-sticky");
+    } else {
+        $("#tabs").removeClass("tabs-sticky");
+    }
+}
 
 function doTransition(that, usingTabs) {
     var oldContentDiv = null;
@@ -43,8 +59,7 @@ function doTransition(that, usingTabs) {
     } else {
         contentDiv = $(that);
     }
-	contentDiv.removeClass('content-hide-add');
-	contentDiv.removeClass('content-hide-add-backwards');
+	contentDiv.removeClass('content-hide-add').removeClass('content-hide-add-backwards');
 	if ($(that).isAfter(previousItem)) {
 		contentDiv.addClass('content-hide-remove');
 	} else {
@@ -64,7 +79,15 @@ $('#tabs input[type="radio"]').click(function() {
     if (!$(this).is(':checked') || $(previousItem).attr('class').split(" ")[0] == $(this).attr('class').split(" ")[0])
         return;
 
-    doTransition(this, true);
+    var that = this;
+    if ($(".sticky-scroller").scrollTop() > 0) {
+        var duration = Math.min(500 * $(".sticky-scroller").scrollTop() / 100, 400);
+        $(".sticky-scroller").animate({scrollTop:$(".sticky-scroller").offset().top}, duration, "linear", function() {
+            doTransition(that, true);
+        });
+    } else {
+        doTransition(that, true);
+    }
 });
 (function($) {
     $.fn.isAfter = function(sel){

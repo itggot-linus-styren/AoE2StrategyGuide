@@ -46,6 +46,14 @@ header h1 {
     font-size: 24px;
 }
 
+.sticky-scroller {
+    position: sticky;
+    display: block;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+}
+
 #drawer-toggle {
 	position: absolute;
 	opacity: 0;
@@ -72,14 +80,21 @@ header h1 {
 }
 
 #tabs {
-    position: relative;
+    position: static;
     height: 55px;
     background-color: rgb(81,45,168);   
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    transition: top 0s;
+    z-index: 3;
     /*transform: translate(-50%, -50%);*/
+}
+
+.tabs-sticky {
+    position: sticky !important;
+    top: 0 !important;
 }
 
 #tabs label {
@@ -118,10 +133,8 @@ header h1 {
 }
 
 .scroll-hack {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: calc(100vh - 192px - 55px);
-    z-index: -1;
+    /*height: calc(100vh - 192px - 55px);
+    z-index: -1;*/
 }
 
 .content {
@@ -139,6 +152,10 @@ header h1 {
     padding-top: 16px;
     padding-left: 16px;
     padding-right: 16px;
+}
+
+.content > p {
+    max-width: 1024px;
 }
 
 .content > .img-text {
@@ -405,6 +422,10 @@ header h1 {
       box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.3);
 	}
 
+    #drawer ul > li > div > img {
+        opacity: 0.54;
+    }
+
 	#drawer > div {
 		display: flex;	
 		font-weight: 500;
@@ -433,7 +454,7 @@ header h1 {
 		height: 48px;
 	}
 
-	#drawer ul > li > div {
+	#drawer ul > li > div:has(> a) {
 		display: flex;
 		align-items: center;
         width: 100%;
@@ -441,7 +462,7 @@ header h1 {
 	}
 
 	#drawer ul > li > div > a {
-		margin-left: 72px;
+		margin-left: calc(72px - 32px);
 		font-size: 14px;	
 		color: rgba(0, 0, 0, 0.87);
 		text-decoration: none;
@@ -472,7 +493,7 @@ header h1 {
 		width: 100%;
 	}
 
-	#drawer ul > li > img {
+	#drawer ul > li > div {
 		margin-left: 16px;
 	}
 
